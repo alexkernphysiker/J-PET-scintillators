@@ -6,6 +6,7 @@ math_h
 Rectan*
 google*
 build
+results
 *.code-workspace
 
 # Compiled Object files

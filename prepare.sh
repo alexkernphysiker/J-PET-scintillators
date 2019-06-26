@@ -11,7 +11,7 @@ cmake ..
 if make; then
 	if math_h/math_h_test.exe --gtest_break_on_failure; then
 		if RectangularScintillator/rectscin-test.exe --gtest_break_on_failure; then
-			echo "Everythong is OK. You can run the calculations"
+			echo "Everything is OK. You can run the calculations"
 		fi
 	fi
 fi
