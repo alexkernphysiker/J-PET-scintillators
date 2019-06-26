@@ -25,7 +25,7 @@ const double y_ph=9.5;//milimeters
 double absorption(const double&lambda){
   return polyester_absorp(lambda)*1.8;
 }
-auto withabsorption(const double&l){
+const std::shared_ptr<Scintillator> withabsorption(const double&l){
     return MakeScintillator(
       {make_pair(-l/2,l/2),sizeX,sizeY},opt_dens,TimeDistribution2(0.005,0.2,1.5),
       make_shared<DistribTable>(BC420_lambda),absorption

@@ -21,7 +21,7 @@ const auto sizeX=make_pair(0.0,7.0);//milimeters
 const auto sizeY=make_pair(0.0,19.0);//milimeters
 const double x_ph=3.5;//milimeters
 const double y_ph=9.5;//milimeters
-auto absorptionless(const double&l){
+const std::shared_ptr<Scintillator> absorptionless(const double&l){
     return MakeScintillator_absorptionless(
       {make_pair(-l/2,l/2),sizeX,sizeY},opt_dens,TimeDistribution2(0.005,0.2,1.5)
       );
@@ -29,7 +29,7 @@ auto absorptionless(const double&l){
 double absorption(const double&lambda){
   return polyester_absorp(lambda)*1.8;
 }
-auto withabsorption(const double&l){
+const std::shared_ptr<Scintillator> withabsorption(const double&l){
     return MakeScintillator(
       {make_pair(-l/2,l/2),sizeX,sizeY},opt_dens,TimeDistribution2(0.005,0.2,1.5),
       make_shared<DistribTable>(BC420_lambda),absorption

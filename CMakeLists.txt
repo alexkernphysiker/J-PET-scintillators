@@ -1,4 +1,4 @@
-add_definitions(--std=c++17)
+add_definitions(--std=c++11)
 add_subdirectory(googletest)
 include_directories(googletest/googletest/include)
 set(GTEST ON)
