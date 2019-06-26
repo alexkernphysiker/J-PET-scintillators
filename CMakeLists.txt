@@ -1,0 +1,16 @@
+add_definitions(--std=c++17)
+add_subdirectory(googletest)
+include_directories(googletest/googletest/include)
+set(GTEST ON)
+add_subdirectory(math_h)
+add_subdirectory(RectangularScintillator)
+include_directories(${MATH_H_INC})
+include_directories(${RECTSCIN_INC})
+
+file(GLOB EXAMPLES sim*.cpp)
+foreach(example ${EXAMPLES})
+    get_filename_component(ex_app ${example} NAME_WE)
+    add_executable(${ex_app} ${example} model.cpp)
+    target_link_libraries(${ex_app} rectscin)
+endforeach()
+

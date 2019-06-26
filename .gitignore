@@ -1,0 +1,52 @@
+*~
+bin
+*.kdev*
+.vscode
+math_h
+Rectan*
+google*
+build
+*.code-workspace
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Compiled Dynamic libraries
+*.so
+*.so.*
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# for windows
+*.dll
+*.exe
+
+#cmake
+Makefile
+Makefile*.*
+*cmake
+CMakeCache*
+CMakeFiles
+
+
+#tex
+*.dvi
+*.bak
+*.aux
+*.pdf
+*.gz
+*.log
+*.out
+*latexmk
+*.fls
+*.toc
+*.nav
+*.snm
+*.bbl
+*.blg
