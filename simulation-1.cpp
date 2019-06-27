@@ -118,14 +118,16 @@ int main(int , char **){
             double norm=0;
             auto Sl=make_shared<SignalSumm>(),Sr=make_shared<SignalSumm>();
             auto left=make_shared<SignalSort>(),right=make_shared<SignalSort>();
-            for(int i=0;i<si_phm_matrix.size();i++){
+            for(int i=0;i<time_differences3.size();i++){
               time_differences3.push_back(make_shared<SignalStatictics>());
               auto l=make_shared<Signal>(),r=make_shared<Signal>();
-              if(time_differences3[i]->data().Sample().count()<2) break;
-              norm+=1.0/pow(time_differences3[i]->data().epsilon(),2);
-              left >>(SignalMultiply(1.0/pow(time_differences3[i]->data().epsilon(),2))>>l);
-              right>>(SignalMultiply(1.0/pow(time_differences3[i]->data().epsilon(),2))>>r);
-              Sl<<l;Sr<<r;
+              double w=time_differences3[i]->data().Sample().count();
+              if(w>=time_differences3[0]->data().Sample().count()){
+                norm+=w;
+                left >>(SignalMultiply(time_differences3[i]->data().Sample().count())>>l);
+                right>>(SignalMultiply(time_differences3[i]->data().Sample().count())>>r);
+                Sl<<l;Sr<<r;
+              }
             }
             auto inv_r=SignalInvert();
             Sr>>inv_r;
