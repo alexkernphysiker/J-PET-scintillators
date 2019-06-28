@@ -116,8 +116,8 @@ int main(int , char **){
             for(int i=0;i<time_differences3.size();i++){
               time_differences3.push_back(make_shared<SignalStatictics>());
               auto l=make_shared<Signal>(),r=make_shared<Signal>();
-              double w=time_differences3[i]->data().Sample().count();
-              if(w>=time_differences3[0]->data().Sample().count()){
+              if(time_differences3[i]->data().Sample().count()>2){
+                double w=pow(time_differences3[i]->data().uncertainty(),2);
                 norm+=w;
                 left >>(SignalMultiply(time_differences3[i]->data().Sample().count())>>l);
                 right>>(SignalMultiply(time_differences3[i]->data().Sample().count())>>r);
