@@ -120,8 +120,8 @@ int main(int , char **){
               if(time_differences3[i]->data().Sample().count()>2){
                 double w=1.0/pow(time_differences3[i]->data().uncertainty(),2);
                 norm+=w;
-                left >>(SignalMultiply(time_differences3[i]->data().Sample().count())>>l);
-                right>>(SignalMultiply(time_differences3[i]->data().Sample().count())>>r);
+                left >>(SignalMultiply(w)>>l);
+                right>>(SignalMultiply(w)>>r);
                 Sl<<l;Sr<<r;
               }
             }
