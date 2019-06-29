@@ -123,10 +123,13 @@ int main(int , char **){
               auto l=make_shared<Signal>(),r=make_shared<Signal>();
               if(time_differences3[i]->data().Sample().count()>2){
                 double w=1.0/pow(time_differences3[i]->data().uncertainty(),2);
-                norm+=w;
-                left >>(SignalMultiply(w)>>l);
-                right>>(SignalMultiply(w)>>r);
-                Sl<<l;Sr<<r;
+                double w0=1.0/pow(time_differences3[0]->data().uncertainty(),2);
+                if(w>=w0){
+                  norm+=w;
+                  left >>(SignalMultiply(w)>>l);
+                  right>>(SignalMultiply(w)>>r);
+                  Sl<<l;Sr<<r;
+                }
               }
             }
             auto inv_r=SignalInvert();
