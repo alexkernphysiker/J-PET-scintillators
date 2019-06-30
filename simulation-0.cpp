@@ -149,7 +149,7 @@ int main(int , char **){
     Plot("0")
     .Line(curve1,"tube + absorption + DOI","0-1")
     .Line(curve2,"2x5 matrix (3rd) + absorption + DOI","0-2")
-    .Line(curve3,"2x5matrix(1-3 wieghted) + absorption","0-3")
+    .Line(curve3,"2x5matrix(wieghted) + absorption","0-3")
     <<"set key on";
     return 0;
 }
