@@ -3,6 +3,7 @@
 #include <iostream>
 #include <list>
 #include <math_h/tabledata.h>
+#include <math_h/randomfunc.h>
 #include <gnuplot_wrap.h>
 #include <RectScin/scintillator.h>
 #include <RectScin/sensitive.h>
@@ -20,16 +21,18 @@ const auto DOI = value<>(0.0,0.063);//ns
 const double opt_dens=1.58;
 const auto sizeX=make_pair(0.0,7.0);//milimeters
 const auto sizeY=make_pair(0.0,19.0);//milimeters
-const double x_ph=3.5;//milimeters
-const double y_ph=9.5;//milimeters
+const RandomUniform<> x_ph(sizeX.first,sizeX.second);
+const RandomUniform<> y_ph(sizeY.first,sizeY.second);
 double absorption(const double&lambda){
   return polyester_absorp(lambda)*1.8;
 }
 const std::shared_ptr<Scintillator> withabsorption(const double&l){
-    return MakeScintillator(
+    auto res=MakeScintillator(
       {make_pair(-l/2,l/2),sizeX,sizeY},opt_dens,TimeDistribution2(0.005,0.2,1.5),
       make_shared<DistribTable>(BC420_lambda),absorption
     );
+    res->Configure(Scintillator::Options(2,50));//2 threads, max 50 reflections
+    return res;
 };
 const vector<vector<pair<double,double>>> si_phm_matrix={
   {make_pair(0.0,3.0),make_pair(0.0,3.0)},
@@ -100,9 +103,9 @@ int main(int , char **){
           }
           cout<<"Run 1"<<endl;
           for(unsigned int cnt=0;cnt<virtual_experiments_count;cnt++){
-                scin1->RegisterGamma({0.0,x_ph,y_ph},N_photons);
-                scin2->RegisterGamma({0.0,x_ph,y_ph},N_photons);
-                scin3->RegisterGamma({0.0,x_ph,y_ph},N_photons);
+                scin1->RegisterGamma({0.0,x_ph(),y_ph()},N_photons);
+                scin2->RegisterGamma({0.0,x_ph(),y_ph()},N_photons);
+                scin3->RegisterGamma({0.0,x_ph(),y_ph()},N_photons);
           }
           cout<<"Getting points 1,2"<<endl;
           curve1<<make_point(L,(time_difference1->data()+DOI).uncertainty());
@@ -140,7 +143,7 @@ int main(int , char **){
           }
           cout<<"Run 2"<<endl;
           for(unsigned int cnt=0;cnt<virtual_experiments_count;cnt++){
-                scin3_final->RegisterGamma({0.0,x_ph,y_ph},N_photons);
+                scin3_final->RegisterGamma({0.0,x_ph(),y_ph()},N_photons);
           }
           cout<<"Getting point 3"<<endl;
           curve3<<make_point(L,time_difference3->data().uncertainty());

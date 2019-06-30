@@ -22,18 +22,22 @@ const auto sizeY=make_pair(0.0,19.0);//milimeters
 const double x_ph=3.5;//milimeters
 const double y_ph=9.5;//milimeters
 const std::shared_ptr<Scintillator> absorptionless(const double&l){
-    return MakeScintillator_absorptionless(
+    auto res=MakeScintillator_absorptionless(
       {make_pair(-l/2,l/2),sizeX,sizeY},opt_dens,TimeDistribution2(0.005,0.2,1.5)
       );
+    res->Configure(Scintillator::Options(2,50));//2 threads, max 50 reflections
+    return res;
 };
 double absorption(const double&lambda){
   return polyester_absorp(lambda)*0.552;
 }
 const std::shared_ptr<Scintillator> withabsorption(const double&l){
-    return MakeScintillator(
+    auto res=MakeScintillator(
       {make_pair(-l/2,l/2),sizeX,sizeY},opt_dens,TimeDistribution2(0.005,0.2,1.5),
       make_shared<DistribTable>(BC420_lambda),absorption
     );
+    res->Configure(Scintillator::Options(2,50));//2 threads, max 50 reflections
+    return res;
 };
 const vector<vector<pair<double,double>>> si_phm_matrix={
   {make_pair(0.0,3.0),make_pair(0.0,3.0)},
