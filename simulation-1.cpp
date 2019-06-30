@@ -119,13 +119,12 @@ int main(int , char **){
             auto Sl=make_shared<SignalSumm>(),Sr=make_shared<SignalSumm>();
             auto left=make_shared<SignalSort>(),right=make_shared<SignalSort>();
             for(int i=0;i<time_differences3.size();i++){
-              time_differences3.push_back(make_shared<SignalStatictics>());
-              auto l=make_shared<Signal>(),r=make_shared<Signal>();
               if(time_differences3[i]->data().Sample().count()>2){
                 double w=1.0/pow(time_differences3[i]->data().uncertainty(),2);
                 double w0=1.0/pow(time_differences3[0]->data().uncertainty(),2);
                 if(w>=w0){
                   norm+=w;
+                  auto l=make_shared<Signal>(),r=make_shared<Signal>();
                   left >>(SignalMultiply(w)>>l);
                   right>>(SignalMultiply(w)>>r);
                   Sl<<l;Sr<<r;
