@@ -130,7 +130,7 @@ int main(int , char **){
             }
             auto inv_r=SignalInvert();
             Sr>>inv_r;
-            ((make_shared<SignalSumm>()<<Sl<<inv_r)>>SignalMultiply(1.0/norm))>>time_difference3;
+            (make_shared<SignalSumm>()<<Sl<<inv_r)>>(SignalMultiply(1.0/norm)>>time_difference3);
             for(const auto& size_m:si_phm_matrix){
               auto photosensor=[&size_m](){return Photosensor(size_m,1.0,Si_Photo_QE,tts);};
               auto l=make_shared<Signal>(),r=make_shared<Signal>();
