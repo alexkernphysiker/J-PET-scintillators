@@ -31,7 +31,7 @@ const std::shared_ptr<Scintillator> withabsorption(const double&l){
       {make_pair(-l/2,l/2),sizeX,sizeY},opt_dens,TimeDistribution2(0.005,0.2,1.5),
       make_shared<DistribTable>(BC420_lambda),absorption
     );
-    res->Configure(Scintillator::Options(2,50));//2 threads, max 50 reflections
+    res->Configure(Scintillator::Options(4,50));//2 threads, max 50 reflections
     return res;
 };
 const vector<vector<pair<double,double>>> si_phm_matrix={

@@ -1,8 +1,9 @@
 #!/bin/bash
+rm -rf math_h RectangularScintillator build results googletest
 git clone https://github.com/alexkernphysiker/RectangularScintillator.git
 git clone https://github.com/alexkernphysiker/math_h.git
 cd math_h
-	git checkout 6c507241e26e3ba435570234845aab75a8a0ad65
+	git checkout 6c507241e26e3ba435570234845aab75a8a0ad65  # the last commit when supported c++11
 cd ..
 git clone https://github.com/google/googletest.git
 mkdir build
@@ -16,3 +17,4 @@ if make; then
 	fi
 fi
 cd ..
+source sim.sh
