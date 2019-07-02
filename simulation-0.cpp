@@ -49,6 +49,7 @@ const vector<vector<pair<double,double>>> si_phm_matrix={
 int main(int , char **){
     list<double> lengths={30, 50, 75, 100, 150, 200, 300, 400, 500, 1000, 1400, 2000};
     SortedPoints<> curve1,curve21,curve22,curve3;
+    SortedPoints<> eff1,eff21,eff22,eff3;
     for(auto L:lengths){
         {//photomultipliers
           cout<<L<<"mm"<<endl;
@@ -116,6 +117,9 @@ int main(int , char **){
           curve1<<make_point(L,(time_difference1->data()+DOI).uncertainty());
           curve21<<make_point(L,(time_difference21->data()+DOI).uncertainty());
           curve22<<make_point(L,(time_difference22->data()+DOI).uncertainty());
+          curve1<<make_point(L,time_difference1->data().Sample().count()/virtual_experiments_count);
+          curve21<<make_point(L,time_difference21->data().Sample().count()/virtual_experiments_count);
+          curve22<<make_point(L,time_difference22->data().Sample().count()/virtual_experiments_count);
           cout<<"Creating system 3-b"<<endl;
           auto scin3_final=withabsorption(L);
           auto time_difference3=make_shared<SignalStatictics>();
@@ -153,6 +157,7 @@ int main(int , char **){
           }
           cout<<"Getting point 3"<<endl;
           curve3<<make_point(L,time_difference3->data().uncertainty());
+          eff3<<make_point(L,time_difference3->data().Sample().count()/virtual_experiments_count);
         }
     }
     Plot("0")
@@ -160,6 +165,12 @@ int main(int , char **){
     .Line(curve21,"2x5 matrix (1st) + absorption + DOI","0-2")
     .Line(curve22,"2x5 matrix (3rd) + absorption + DOI","0-3")
     .Line(curve3,"2x5matrix(wieghted) + absorption","0-4")
+    <<"set key on";
+    Plot("0-eff")
+    .Line(eff1,"tube + absorption + DOI","0eff-1")
+    .Line(eff21,"2x5 matrix (1st) + absorption + DOI","0eff-2")
+    .Line(eff22,"2x5 matrix (3rd) + absorption + DOI","0eff-3")
+    .Line(eff3,"2x5matrix(wieghted) + absorption","0eff-4")
     <<"set key on";
     return 0;
 }
