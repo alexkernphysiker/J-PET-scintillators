@@ -71,19 +71,24 @@ int main(int , char **){
           }
           cout<<"Creating system 2"<<endl;
           auto scin2=withabsorption(L);
-          auto time_difference2=make_shared<SignalStatictics>();
+          auto time_difference21=make_shared<SignalStatictics>();
+          auto time_difference22=make_shared<SignalStatictics>();
           {
-            auto left=make_shared<SignalSortAndSelect>(2),right=make_shared<SignalSortAndSelect>(2);
+            auto left1=make_shared<SignalSortAndSelect>(0),right1=make_shared<SignalSortAndSelect>(0);
+            auto left2=make_shared<SignalSortAndSelect>(2),right2=make_shared<SignalSortAndSelect>(2);
             for(const auto& size_m:si_phm_matrix){
                 auto photosensor=[&size_m](){return Photosensor(size_m,1.0,Si_Photo_QE,tts);};
                 auto l=make_shared<Signal>(),r=make_shared<Signal>();
                 scin2->Surface(0,RectDimensions::Left)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>l));
                 scin2->Surface(0,RectDimensions::Right)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>r));
-                left<<l;right<<r;
+                left1<<l;right1<<r;
+                left2<<l;right2<<r;
             }
-            auto inv_right=SignalInvert();
-            right>>inv_right;
-            (make_shared<SignalSumm>()<<left<<inv_right)>>time_difference2;
+            auto inv_right1=SignalInvert();
+            auto inv_right2=SignalInvert();
+            right1>>inv_right1;right2>>inv_right2;
+            (make_shared<SignalSumm>()<<left1<<inv_right1)>>time_difference21;
+            (make_shared<SignalSumm>()<<left2<<inv_right2)>>time_difference22;
           }
           cout<<"Creating system 3-a"<<endl;
           auto scin3=absorptionless(L);
@@ -114,7 +119,7 @@ int main(int , char **){
           }
           cout<<"Getting points 1,2"<<endl;
           curve1<<make_point(L,(time_difference1->data()+DOI).uncertainty());
-          curve2<<make_point(L,(time_difference2->data()+DOI).uncertainty());
+          curve2<<make_point(L,((time_difference21->data()+time_difference22->data())/2.0+DOI).uncertainty());
           cout<<"Creating system 3-b"<<endl;
           auto scin3_final=absorptionless(L);
           auto time_difference3=make_shared<SignalStatictics>();
@@ -156,7 +161,7 @@ int main(int , char **){
     }
     Plot("1")
     .Line(curve1,"solid silicon photosensors + absorption + DOI","1-1")
-    .Line(curve2,"2x5 matrices(3rd) + absorption + DOI","1-2")
+    .Line(curve2,"2x5 matrices(1st+3rd) + absorption + DOI","1-2")
     .Line(curve3,"2x5 matrices(weighted+100%eff)","1-3")
     <<"set key on";
     return 0;

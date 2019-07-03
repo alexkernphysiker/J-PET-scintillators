@@ -69,19 +69,24 @@ int main(int , char **){
                 (make_shared<SignalSumm>()<<left<<inv_right)>>time_difference1;
           }
           auto scin2=withabsorption(L);
-          auto time_difference2=make_shared<SignalStatictics>();
+          auto time_difference21=make_shared<SignalStatictics>();
+          auto time_difference22=make_shared<SignalStatictics>();
           {
-            auto left=make_shared<SignalSortAndSelect>(2),right=make_shared<SignalSortAndSelect>(2);
+            auto left1=make_shared<SignalSortAndSelect>(0),right1=make_shared<SignalSortAndSelect>(0);
+            auto left2=make_shared<SignalSortAndSelect>(2),right2=make_shared<SignalSortAndSelect>(2);
             for(const auto& size_m:si_phm_matrix){
                 auto photosensor=[&size_m](){return Photosensor(size_m,1.0,Si_Photo_QE,tts);};
                 auto l=make_shared<Signal>(),r=make_shared<Signal>();
                 scin2->Surface(0,RectDimensions::Left)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>l));
                 scin2->Surface(0,RectDimensions::Right)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>r));
-                left<<l;right<<r;
+                left1<<l;right1<<r;
+                left2<<l;right2<<r;
             }
-            auto inv_right=SignalInvert();
-            right>>inv_right;
-            (make_shared<SignalSumm>()<<left<<inv_right)>>time_difference2;
+            auto inv_right1=SignalInvert();
+            auto inv_right2=SignalInvert();
+            right1>>inv_right1;right2>>inv_right2;
+            (make_shared<SignalSumm>()<<left1<<inv_right1)>>time_difference21;
+            (make_shared<SignalSumm>()<<left2<<inv_right2)>>time_difference22;
           }
           auto scin3=absorptionless(L);
           vector<shared_ptr<SignalStatictics>> time_differences3={};
@@ -109,7 +114,7 @@ int main(int , char **){
                 scin3->RegisterGamma({0.0,x_ph,y_ph},N_photons);
           }
           curve1<<make_point(L,(time_difference1->data()+DOI).uncertainty());
-          curve2<<make_point(L,(time_difference2->data()+DOI).uncertainty());
+          curve2<<make_point(L,((time_difference21->data()+time_difference22->data())/2.0+DOI).uncertainty());
 
           auto scin3_final=absorptionless(L);
           auto time_difference3=make_shared<SignalStatictics>();
