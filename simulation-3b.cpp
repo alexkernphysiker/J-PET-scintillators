@@ -114,7 +114,7 @@ int main(int , char **){
                 scin3->RegisterGamma({0.0,x_ph,y_ph},N_photons);
           }
           curve1<<make_point(L,(time_difference1->data()+DOI).uncertainty());
-          curve2<<make_point(L,((time_difference21->data()+time_difference22->data())/2.0+DOI).uncertainty());
+          curve2<<make_point(L,((time_difference21->data()+DOI).uncertainty()+(time_difference22->data()+DOI).uncertainty())/2.0);
 
           auto scin3_final=absorptionless(L);
           auto time_difference3=make_shared<SignalStatictics>();
