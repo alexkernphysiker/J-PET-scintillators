@@ -53,7 +53,7 @@ const vector<vector<pair<double,double>>> si_phm_matrix={
 };
 int main(int , char **){
     list<double> lengths={30, 50, 75, 100, 150, 200, 300, 400, 500, 1000, 1400, 2000};
-    SortedPoints<> curve1,curve2,curve3;
+    SortedPoints<> curve1,curve21,curve22,curve2,curve3;
     for(auto L:lengths){
         {//photomultipliers
           cout<<L<<"mm"<<endl;
@@ -115,6 +115,8 @@ int main(int , char **){
           }
           curve1<<make_point(L,(time_difference1->data()+DOI).uncertainty());
           curve2<<make_point(L,((time_difference21->data()+DOI).uncertainty()+(time_difference22->data()+DOI).uncertainty())/2.0);
+          curve21<<make_point(L,(time_difference21->data()+DOI).uncertainty());
+          curve22<<make_point(L,(time_difference22->data()+DOI).uncertainty());
 
           auto scin3_final=absorptionless(L);
           auto time_difference3=make_shared<SignalStatictics>();
@@ -152,6 +154,12 @@ int main(int , char **){
           curve3<<make_point(L,time_difference3->data().uncertainty());
         }
     }
-    Plot("3c").Line(curve1,"","3c-1").Line(curve2,"","3c-2").Line(curve3,"","3c-3");
+     Plot("3c")
+    .Line(curve1,"solid silicon photosensors + absorption","3c-1")
+    .Line(curve21,"2x5 matrix (1st) + absorption","3c-2")
+    .Line(curve22,"2x5 matrix (3rd) + absorption","3c-3")
+    .Line(curve2,"2x5 matrix (1st+3rd) + absorption","3c-4")
+    .Line(curve3,"2x5 matrices(weighted+100%eff)","3c-5")
+    <<"set key on";
     return 0;
 }

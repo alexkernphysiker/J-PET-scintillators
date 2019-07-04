@@ -165,8 +165,8 @@ int main(int , char **){
     .Line(curve1,"tube + absorption + DOI","0-1")
     .Line(curve21,"2x5 matrix (1st) + absorption + DOI","0-2")
     .Line(curve22,"2x5 matrix (3rd) + absorption + DOI","0-3")
-    .Line(curve2,"2x5 matrix (1st+3rd) + absorption + DOI","0-23")
-    .Line(curve3,"2x5matrix(wieghted) + absorption","0-4")
+    .Line(curve2,"2x5 matrix (1st+3rd) + absorption + DOI","0-4")
+    .Line(curve3,"2x5matrix(wieghted) + absorption","0-5")
     <<"set key on";
     Plot("0-eff")
     .Line(eff1,"tube + absorption + DOI","0eff-1")
