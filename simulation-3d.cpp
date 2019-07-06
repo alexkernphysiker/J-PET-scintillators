@@ -25,7 +25,7 @@ const std::shared_ptr<Scintillator> absorptionless(const double&l){
     auto res=MakeScintillator_absorptionless(
       {make_pair(-l/2,l/2),sizeX,sizeY},opt_dens,TimeDistribution2(0.005,0.2,1.5)
       );
-    res->Configure(Scintillator::Options(4,50));//2 threads, max 50 reflections
+    res->Configure(Scintillator::Options(4,50));//4 threads, max 50 reflections
     return res;
 };
 double absorption(const double&lambda){
@@ -155,11 +155,11 @@ int main(int , char **){
         }
     }
      Plot("3d")
-    .Line(curve1,"solid silicon photosensors + absorption","3d-1")
-    .Line(curve21,"2x5 matrix (1st) + absorption","3d-2")
-    .Line(curve22,"2x5 matrix (3rd) + absorption","3d-3")
-    .Line(curve2,"2x5 matrix (1st+3rd) + absorption","3d-4")
-    .Line(curve3,"2x5 matrices(weighted+100%eff)","3d-5")
+    .Line(curve1,"1. solid silicon photosensors + absorption","3d-1")
+    .Line(curve21,"2. 2x5 matrix (1st) + absorption","3d-2")
+    .Line(curve22,"3. 2x5 matrix (3rd) + absorption","3d-3")
+    .Line(curve2,"4. 2x5 matrix (1st+3rd) + absorption","3d-4")
+    .Line(curve3,"5. 2x5 matrices(weighted+100%eff)","3d-5")
     <<"set key on";
     return 0;
 }

@@ -36,7 +36,7 @@ const std::shared_ptr<Scintillator> withabsorption(const double&l){
       {make_pair(-l/2,l/2),sizeX,sizeY},opt_dens,TimeDistribution2(0.005,0.2,1.5),
       make_shared<DistribTable>(BC420_lambda),absorption
     );
-    res->Configure(Scintillator::Options(4,50));//2 threads, max 50 reflections
+    res->Configure(Scintillator::Options(4,50));//4 threads, max 50 reflections
     return res;
 };
 const vector<vector<pair<double,double>>> si_phm_matrix={
@@ -162,11 +162,11 @@ int main(int , char **){
         }
     }
      Plot("1")
-    .Line(curve1,"solid silicon photosensors + absorption + DOI","1-1")
-    .Line(curve21,"2x5 matrix (1st) + absorption + DOI","1-2")
-    .Line(curve22,"2x5 matrix (3rd) + absorption + DOI","1-3")
-    .Line(curve2,"2x5 matrix (1st+3rd) + absorption + DOI","1-4")
-    .Line(curve3,"2x5 matrices(weighted+100%eff)","1-5")
+    .Line(curve1,"1. solid silicon photosensors + absorption + DOI","1-1")
+    .Line(curve21,"2. 2x5 matrix (1st) + absorption + DOI","1-2")
+    .Line(curve22,"3. 2x5 matrix (3rd) + absorption + DOI","1-3")
+    .Line(curve2,"4. 2x5 matrix (1st+3rd) + absorption + DOI","1-4")
+    .Line(curve3,"5. 2x5 matrices(weighted+100%eff)","1-5")
     <<"set key on";
     return 0;
 }

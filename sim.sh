@@ -1,5 +1,6 @@
 mkdir results
 cd results
+../build/simulation-additional
 ../build/simulation-0
 ../build/simulation-1
 ../build/simulation-3a
