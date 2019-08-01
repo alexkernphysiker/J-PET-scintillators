@@ -1,6 +1,7 @@
 add_definitions(--std=c++11)
 add_subdirectory(googletest)
 include_directories(googletest/googletest/include)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -fPIC")
 set(GTEST ON)
 add_subdirectory(math_h)
 add_subdirectory(RectangularScintillator)
