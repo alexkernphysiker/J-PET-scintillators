@@ -17,7 +17,6 @@ using namespace GnuplotWrap;
 using namespace RectangularScintillator;
 
 const double tts_tube=0.068;//ns
-const double tts=0.128;//ns
 const auto DOI = value<>(0.0,0.063);//ns
 const double opt_dens=1.58;
 const auto sizeX=make_pair(0.0,6.0);//milimeters
@@ -47,6 +46,11 @@ int main(int , char **){
           {
                 auto photosensor=[](){return Photosensor({sizeX,sizeY},1.0,tube_QE,tts_tube);};
                 auto left=make_shared<Signal>(),right=make_shared<Signal>();
+                //TimeSignal({make_pair(0,1)}) : photon order statistics 0, weight 1
+                // To calculate signal time using times of several 
+                // photons add several pairs
+                // for eg.: TimeSignal({make_pair(0,0.5),make_pair(1,0.5)})
+                // will use average of first two photons times
                 scin1->Surface(0,RectDimensions::Left)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>left));
                 scin1->Surface(0,RectDimensions::Right)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>right));
                 auto inv_right=SignalInvert();
