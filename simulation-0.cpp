@@ -15,6 +15,7 @@ using namespace std;
 using namespace MathTemplates;
 using namespace GnuplotWrap;
 using namespace RectangularScintillator;
+
 const double tts_tube=0.068;//ns
 const double tts=0.128;//ns
 const auto DOI = value<>(0.0,0.063);//ns
