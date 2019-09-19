@@ -27,42 +27,42 @@ double absorption(const double&lambda){
   return polyester_absorp(lambda)*1.8;
 }
 const std::shared_ptr<Scintillator> withabsorption(const double&l){
-    auto res=MakeScintillator(
-      {make_pair(-l/2,l/2),sizeX,sizeY},opt_dens,TimeDistribution2(0.005,0.2,1.5),
-      make_shared<DistribTable>(BC420_lambda),absorption
-    );
-    res->Configure(Scintillator::Options(4,50));//4 threads, max 50 reflections
-    return res;
+  auto res=MakeScintillator(
+    {make_pair(-l/2,l/2),sizeX,sizeY},opt_dens,TimeDistribution2(0.005,0.2,1.5),
+    make_shared<DistribTable>(BC420_lambda),absorption
+  );
+  res->Configure(Scintillator::Options(4,50));//4 threads, max 50 reflections
+  return res;
 };
 int main(int , char **){
-    list<double> lengths={30, 50, 75, 100, 150, 200, 300, 400, 500, 1000, 1400, 2000};
-    SortedPoints<> curve1;
-    for(auto L:lengths){
-        {//photomultipliers
-          	cout<<L<<"mm"<<endl;
-          	auto scin1=withabsorption(L);
-          	auto time_difference1=make_shared<SignalStatictics>();
-          	{
-                auto photosensor=[](){return Photosensor({sizeX,sizeY},1.0,tube_QE,tts_tube);};
-                auto left=make_shared<Signal>(),right=make_shared<Signal>();
-                //TimeSignal({make_pair(0,1)}) : photon order statistics 0, weight 1
-                // To calculate signal time using times of several photons:
-                // TimeSignal({make_pair(0,0.5),make_pair(1,0.5)})
-                // will use average of first two photons times
-                scin1->Surface(0,RectDimensions::Left)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>left));
-                scin1->Surface(0,RectDimensions::Right)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>right));
-                auto inv_right=SignalInvert();
-                right>>inv_right;
-                (make_shared<SignalSumm>()<<left<<inv_right)>>time_difference1;
-          	}
-          	for(unsigned int cnt=0;cnt<virtual_experiments_count;cnt++){
-                scin1->RegisterGamma({0.0,x_ph(),y_ph()},N_photons);
-          	}
-          	curve1<<make_point(L,(time_difference1->data() + DOI).uncertainty());
-        }
+  list<double> lengths={30, 50, 75, 100, 150, 200, 300, 400, 500, 1000, 1400, 2000};
+  SortedPoints<> curve1;
+  for(auto L:lengths){
+    {//photomultipliers
+      cout<<L<<"mm"<<endl;
+      auto scin1=withabsorption(L);
+      auto time_difference1=make_shared<SignalStatictics>();
+      {
+        auto photosensor=[](){return Photosensor({sizeX,sizeY},1.0,tube_QE,tts_tube);};
+        auto left=make_shared<Signal>(),right=make_shared<Signal>();
+        //TimeSignal({make_pair(0,1)}) : photon order statistics 0, weight 1
+        // To calculate signal time using times of several photons:
+        // TimeSignal({make_pair(0,0.5),make_pair(1,0.5)})
+        // will use average of first two photons times
+        scin1->Surface(0,RectDimensions::Left)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>left));
+        scin1->Surface(0,RectDimensions::Right)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>right));
+        auto inv_right=SignalInvert();
+        right>>inv_right;
+        (make_shared<SignalSumm>()<<left<<inv_right)>>time_difference1;
+      }
+      for(unsigned int cnt=0;cnt<virtual_experiments_count;cnt++){
+        scin1->RegisterGamma({0.0,x_ph(),y_ph()},N_photons);
+      }
+      curve1<<make_point(L,(time_difference1->data() + DOI).uncertainty());
     }
-    Plot("kowalski")
-    .Line(curve1,"1. Phm.tube + absorption + DOI","kowalski")
-    <<"set key on";
-    return 0;
+  }
+  Plot("kowalski")
+  .Line(curve1,"1. Phm.tube + absorption + DOI","kowalski")
+  <<"set key on";
+  return 0;
 }
