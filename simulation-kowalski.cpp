@@ -39,10 +39,10 @@ int main(int , char **){
     SortedPoints<> curve1;
     for(auto L:lengths){
         {//photomultipliers
-          cout<<L<<"mm"<<endl;
-          auto scin1=withabsorption(L);
-          auto time_difference1=make_shared<SignalStatictics>();
-          {
+          	cout<<L<<"mm"<<endl;
+          	auto scin1=withabsorption(L);
+          	auto time_difference1=make_shared<SignalStatictics>();
+          	{
                 auto photosensor=[](){return Photosensor({sizeX,sizeY},1.0,tube_QE,tts_tube);};
                 auto left=make_shared<Signal>(),right=make_shared<Signal>();
                 //TimeSignal({make_pair(0,1)}) : photon order statistics 0, weight 1
@@ -54,11 +54,11 @@ int main(int , char **){
                 auto inv_right=SignalInvert();
                 right>>inv_right;
                 (make_shared<SignalSumm>()<<left<<inv_right)>>time_difference1;
-          }
-          for(unsigned int cnt=0;cnt<virtual_experiments_count;cnt++){
+          	}
+          	for(unsigned int cnt=0;cnt<virtual_experiments_count;cnt++){
                 scin1->RegisterGamma({0.0,x_ph(),y_ph()},N_photons);
-          }
-          curve1<<make_point(L,(time_difference1->data() + DOI).uncertainty());
+          	}
+          	curve1<<make_point(L,(time_difference1->data() + DOI).uncertainty());
         }
     }
     Plot("kowalski")
