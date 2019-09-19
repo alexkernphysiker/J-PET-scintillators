@@ -49,6 +49,7 @@ int main(int , char **){
         // To calculate signal time using times of several photons:
         // TimeSignal({make_pair(0,0.5),make_pair(1,0.5)})
         // will use average of first two photons times
+        // (Indeed, order statistics is not measured)
         scin1->Surface(0,RectDimensions::Left)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>left));
         scin1->Surface(0,RectDimensions::Right)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>right));
         auto inv_right=SignalInvert();
