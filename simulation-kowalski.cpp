@@ -40,7 +40,6 @@ int main(int , char **){
     for(auto L:lengths){
         {//photomultipliers
           cout<<L<<"mm"<<endl;
-          cout<<"Creating system 1"<<endl;
           auto scin1=withabsorption(L);
           auto time_difference1=make_shared<SignalStatictics>();
           {
@@ -57,12 +56,10 @@ int main(int , char **){
                 right>>inv_right;
                 (make_shared<SignalSumm>()<<left<<inv_right)>>time_difference1;
           }
-          cout<<"Run"<<endl;
           for(unsigned int cnt=0;cnt<virtual_experiments_count;cnt++){
                 scin1->RegisterGamma({0.0,x_ph(),y_ph()},N_photons);
           }
-          cout<<"Getting points 1,2"<<endl;
-          curve1<<make_point(L,(time_difference1->data()+DOI).uncertainty());
+          curve1<<make_point(L,(time_difference1->data() + DOI).uncertainty());
         }
     }
     Plot("kowalski")
