@@ -1,3 +1,4 @@
+project(jpet-scintillator-simulation)
 add_definitions(--std=c++11)
 add_subdirectory(googletest)
 include_directories(googletest/googletest/include)
