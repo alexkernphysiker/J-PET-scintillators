@@ -11,6 +11,7 @@
 #include <RectScin/signal_processing.h>
 #include <RectScin/signal_statistics.h>
 #include "model.h"
+
 using namespace std;
 using namespace MathTemplates;
 using namespace GnuplotWrap;
