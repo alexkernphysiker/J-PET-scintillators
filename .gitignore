@@ -2,9 +2,6 @@
 bin
 *.kdev*
 .vscode
-math_h
-Rectan*
-google*
 build
 results
 *.code-workspace

@@ -1,0 +1,9 @@
+[submodule "googletest"]
+	path = googletest
+	url = ../../google/googletest.git
+[submodule "RectangularScintillator"]
+	path = RectangularScintillator
+	url = ../../alexkernphysiker/RectangularScintillator.git
+[submodule "math_h"]
+	path = math_h
+	url = ../../alexkernphysiker/math_h.git
