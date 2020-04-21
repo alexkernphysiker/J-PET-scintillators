@@ -34,7 +34,7 @@ double absorption(const double&lambda){
 const std::shared_ptr<Scintillator> withabsorption(const double&l){
     auto res=MakeScintillator(
       {make_pair(-l/2,l/2),sizeX,sizeY},opt_dens,TimeDistribution2(0.005,0.2,1.5),
-      make_shared<DistribTable>(BC420_lambda),absorption
+      make_shared<DistribTable>(LinearInterpolation(BC420_lambda.clone())),absorption
     );
     res->Configure(Scintillator::Options(4,50));//4 threads, max 50 reflections
     return res;
@@ -91,7 +91,7 @@ int main(int , char **){
               (make_shared<SignalSumm>()<<l<<inv_r)>>time_differences3[i];
             }
             for(const auto& size_m:si_phm_matrix){
-              auto photosensor=[&size_m](){return Photosensor(size_m,1.0,Si_Photo_QE,0.040);};
+              auto photosensor=[&size_m](){return Photosensor(size_m,1.0,Si_Photo_QE.func(),0.040);};
               auto l=make_shared<Signal>(),r=make_shared<Signal>();
               scin3->Surface(0,RectDimensions::Left)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>l));
               scin3->Surface(0,RectDimensions::Right)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>r));
@@ -112,7 +112,7 @@ int main(int , char **){
               (make_shared<SignalSumm>()<<l<<inv_r)>>time_differences4[i];
             }
             for(const auto& size_m:si_phm_matrix){
-              auto photosensor=[&size_m](){return Photosensor(size_m,1.0,Si_Photo_QE,0.080);};
+              auto photosensor=[&size_m](){return Photosensor(size_m,1.0,Si_Photo_QE.func(),0.080);};
               auto l=make_shared<Signal>(),r=make_shared<Signal>();
               scin4->Surface(0,RectDimensions::Left)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>l));
               scin4->Surface(0,RectDimensions::Right)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>r));
@@ -133,7 +133,7 @@ int main(int , char **){
               (make_shared<SignalSumm>()<<l<<inv_r)>>time_differences5[i];
             }
             for(const auto& size_m:si_phm_matrix){
-              auto photosensor=[&size_m](){return Photosensor(size_m,1.0,Si_Photo_QE,0.128);};
+              auto photosensor=[&size_m](){return Photosensor(size_m,1.0,Si_Photo_QE.func(),0.128);};
               auto l=make_shared<Signal>(),r=make_shared<Signal>();
               scin5->Surface(0,RectDimensions::Left)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>l));
               scin5->Surface(0,RectDimensions::Right)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>r));
@@ -204,7 +204,7 @@ int main(int , char **){
             Sr>>inv_r;
             (make_shared<SignalSumm>()<<Sl<<inv_r)>>(SignalMultiply(1.0/norm)>>time_difference3);
             for(const auto& size_m:si_phm_matrix){
-              auto photosensor=[&size_m](){return Photosensor(size_m,1.0,Si_Photo_QE,0.040);};
+              auto photosensor=[&size_m](){return Photosensor(size_m,1.0,Si_Photo_QE.func(),0.040);};
               auto l=make_shared<Signal>(),r=make_shared<Signal>();
               scin3_final->Surface(0,RectDimensions::Left)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>l));
               scin3_final->Surface(0,RectDimensions::Right)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>r));
@@ -235,7 +235,7 @@ int main(int , char **){
             Sr>>inv_r;
             (make_shared<SignalSumm>()<<Sl<<inv_r)>>(SignalMultiply(1.0/norm)>>time_difference4);
             for(const auto& size_m:si_phm_matrix){
-              auto photosensor=[&size_m](){return Photosensor(size_m,1.0,Si_Photo_QE,0.080);};
+              auto photosensor=[&size_m](){return Photosensor(size_m,1.0,Si_Photo_QE.func(),0.080);};
               auto l=make_shared<Signal>(),r=make_shared<Signal>();
               scin4_final->Surface(0,RectDimensions::Left)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>l));
               scin4_final->Surface(0,RectDimensions::Right)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>r));
@@ -266,7 +266,7 @@ int main(int , char **){
             Sr>>inv_r;
             (make_shared<SignalSumm>()<<Sl<<inv_r)>>(SignalMultiply(1.0/norm)>>time_difference5);
             for(const auto& size_m:si_phm_matrix){
-              auto photosensor=[&size_m](){return Photosensor(size_m,1.0,Si_Photo_QE,0.128);};
+              auto photosensor=[&size_m](){return Photosensor(size_m,1.0,Si_Photo_QE.func(),0.128);};
               auto l=make_shared<Signal>(),r=make_shared<Signal>();
               scin5_final->Surface(0,RectDimensions::Left)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>l));
               scin5_final->Surface(0,RectDimensions::Right)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>r));

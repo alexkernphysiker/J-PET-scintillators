@@ -34,7 +34,7 @@ double absorption(const double&lambda){
 const std::shared_ptr<Scintillator> withabsorption(const double&l){
     auto res=MakeScintillator(
       {make_pair(-l/2,l/2),sizeX,sizeY},opt_dens,TimeDistribution2(0.005,0.2,1.5),
-      make_shared<DistribTable>(BC420_lambda),absorption
+      make_shared<DistribTable>(LinearInterpolation(BC420_lambda.clone())),absorption
     );
     res->Configure(Scintillator::Options(4,50));//2 threads, max 50 reflections
     return res;
@@ -60,7 +60,7 @@ int main(int , char **){
           auto scin1=withabsorption(L);
           auto time_difference1=make_shared<SignalStatictics>();
           {
-                auto photosensor=[](){return Photosensor({sizeX,sizeY},1.0,Si_Photo_QE,tts);};
+                auto photosensor=[](){return Photosensor({sizeX,sizeY},1.0,Si_Photo_QE.func(),tts);};
                 auto left=make_shared<Signal>(),right=make_shared<Signal>();
                 scin1->Surface(0,RectDimensions::Left)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>left));
                 scin1->Surface(0,RectDimensions::Right)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>right));
@@ -75,7 +75,7 @@ int main(int , char **){
             auto left1=make_shared<SignalSortAndSelect>(0),right1=make_shared<SignalSortAndSelect>(0);
             auto left2=make_shared<SignalSortAndSelect>(2),right2=make_shared<SignalSortAndSelect>(2);
             for(const auto& size_m:si_phm_matrix){
-                auto photosensor=[&size_m](){return Photosensor(size_m,1.0,Si_Photo_QE,tts);};
+                auto photosensor=[&size_m](){return Photosensor(size_m,1.0,Si_Photo_QE.func(),tts);};
                 auto l=make_shared<Signal>(),r=make_shared<Signal>();
                 scin2->Surface(0,RectDimensions::Left)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>l));
                 scin2->Surface(0,RectDimensions::Right)>>(photosensor()>>(TimeSignal({make_pair(0,1)})>>r));
