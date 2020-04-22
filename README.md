@@ -8,5 +8,5 @@ How to compile and run
     git submodule update --init --recursive
     cmake .
     make
-    ./J-PET-scintillators
+    ./simulation-example
 
