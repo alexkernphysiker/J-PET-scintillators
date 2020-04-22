@@ -1,6 +1,3 @@
-[submodule "googletest"]
-	path = googletest
-	url = ../../google/googletest.git
 [submodule "RectangularScintillator"]
 	path = RectangularScintillator
 	url = ../../alexkernphysiker/RectangularScintillator.git
