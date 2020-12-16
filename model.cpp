@@ -3,6 +3,7 @@
 #include <math_h/tabledata.h>
 #include "model.h"
 const MathTemplates::LinearInterpolation<> BC420_lambda=MathTemplates::Points<>{
+    // Photon wavelength distribution
     // lambda(nm),  probability (a.u.)
     {359.686,0.686036},
     {361.518,1.66851},
@@ -121,6 +122,7 @@ const MathTemplates::LinearInterpolation<> BC420_lambda=MathTemplates::Points<>{
     {496.859,0.428434}
 };
 const MathTemplates::LinearInterpolation<> polyester_absorp=MathTemplates::Points<>{
+    // absorption coefficient depending on photon wavelength
     // lambda(nm),  coef(mm^(-1))
     {348.842, 0.0083},
     {351.158, 0.0077},
@@ -138,6 +140,7 @@ const MathTemplates::LinearInterpolation<> polyester_absorp=MathTemplates::Point
     {625.29,  0.0002}
 };
 const MathTemplates::LinearInterpolation<> Si_Photo_QE=MathTemplates::Points<>{
+    // Efficiency of silicon photosensor depending on photon wavelength
     // lambda(nm), probability(n.d.)
     {140,	0.0},
     {160,	0.0},
@@ -176,6 +179,7 @@ const MathTemplates::LinearInterpolation<> Si_Photo_QE=MathTemplates::Points<>{
 };
 
 const MathTemplates::LinearInterpolation<> tube_QE=MathTemplates::Points<>{
+// Efficiency of photomultiplier depending on photon wavelength
 // lambda(nm), probability(n.d.)
 {270,	0.1040038519},
 {280,	0.1457088571},
