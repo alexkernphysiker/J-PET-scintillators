@@ -58,7 +58,7 @@ int main(){
         scin1->Surface(0,RectDimensions::Left) >> left_sensor;
         scin1->Surface(0,RectDimensions::Right) >> right_sensor;
 
-        for(size_t index=0; index<50; index++){//cycle over different order statistics
+        for(size_t index=0; index<30; index++){//cycle over different order statistics
             // virtual wires to conduct the "signal" corresponding to needed poton's registration time
             auto left_wire=make_shared<Signal>(), right_wire=make_shared<Signal>();
 
@@ -88,7 +88,7 @@ int main(){
    //empty curve to plot
    SortedPoints<> res_by_order_statistics;
    for(size_t i=0,n=time_differences.size(); i<n; i++){
-       res_by_order_statistics << make_point( (double)i, (time_differences[i]->data() + DOI).uncertainty() );
+       res_by_order_statistics << make_point( (double)(i+1), (time_differences[i]->data() + DOI).uncertainty() );
    }
 
   //Plotting the curve using gnuplot
