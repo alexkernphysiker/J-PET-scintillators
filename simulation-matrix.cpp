@@ -38,7 +38,6 @@ const RandomUniform<> x_ph(sizeX.first,sizeX.second);
 const RandomUniform<> y_ph(sizeY.first,sizeY.second);
 const double z_ph = 0.0;
 
-
 int main(){
   //Scintillator
   auto scin1=MakeScintillator(
