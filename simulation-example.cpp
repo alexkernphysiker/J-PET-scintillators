@@ -33,7 +33,7 @@ double absorption(const double&lambda){
 const std::shared_ptr<Scintillator> create_scintillator(const double&L){
   auto res=MakeScintillator(
     {make_pair(-L/2,L/2),sizeX,sizeY},opt_dens,TimeDistribution2(0.005,0.2,1.5),
-    make_shared<DistribTable>(LinearInterpolation(BC420_lambda.clone())),absorption
+    make_shared<DistribTable>(BC420_lambda.clone()),absorption
   );
   res->Configure(Scintillator::Options(1,50));//1 threads, max 50 reflections
   return res;
