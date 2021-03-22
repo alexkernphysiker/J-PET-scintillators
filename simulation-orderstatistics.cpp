@@ -28,7 +28,7 @@ const auto sizeX=make_pair(0.0,6.0);//milimeters
 const auto sizeY=make_pair(0.0,30.0);//milimeters
 const auto sizeZ=make_pair(-150.0,150.0);//milimeters
 double absorption(const double&lambda){
-  // I discussed this coefficient with Paweł Moskal two years ago
+  // I discussed this coefficient with Paweł Moskal in Sept-Oct 2018
   // Please ask him if it is needed. Maybe you should just update table data
   return polyester_absorp(lambda)*1.8;
 }
