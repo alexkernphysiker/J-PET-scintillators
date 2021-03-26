@@ -6,6 +6,8 @@ build
 results
 *.code-workspace
 CMakeLists.txt.user
+.*
+*.png
 
 # Compiled Object files
 *.slo
