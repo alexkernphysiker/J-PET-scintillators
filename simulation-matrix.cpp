@@ -19,7 +19,7 @@ using namespace RectangularScintillator;
 
 //Time resolution
 const double tts=0.128;//ns
-// I discussed DOI with Paweł Moskal two years ago
+// I discussed DOI with Paweł Moskal in Sept-Oct 2018
 const auto DOI = value<>(0.0,0.063);//ns
 
 //Scintillator
@@ -41,8 +41,8 @@ const double z_ph = 0.0;
 int main(){
   //Scintillator
   auto scin1=MakeScintillator(
-            {sizeZ,sizeX,sizeY},opt_dens,TimeDistribution2(0.005,0.2,1.5),
-            make_shared<DistribTable>(BC420_lambda.clone()),absorption
+      {sizeZ,sizeX,sizeY},opt_dens,TimeDistribution2(0.005,0.2,1.5),
+      make_shared<DistribTable>(BC420_lambda.clone()),absorption
   );
   scin1->Configure(Scintillator::Options(1,50));//1 thread, max 50 reflections
 
@@ -89,7 +89,7 @@ int main(){
    }
 
    Plot("matrix_resolution").Line(res_by_order_statistics)<<"set key on"
-                                                       << "set xlabel 'photosensor order statistics'"
-                                                       << "set ylabel 'time resolution'" ;
+                                                          << "set xlabel 'photosensor order statistics'"
+                                                          << "set ylabel 'time resolution'" ;
   return 0;
 }
