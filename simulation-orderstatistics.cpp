@@ -93,7 +93,7 @@ int main(){
    }
 
    Plot("order_resolution").Line(res_by_order_statistics)<<"set key on"
-                                                       << "set xlabel 'photosensor order statistics'"
+                                                       << "set xlabel 'photon order statistics'"
                                                        << "set ylabel 'time resolution'" ;
   return 0;
 }
