@@ -18,82 +18,82 @@ using namespace GnuplotWrap;
 using namespace RectangularScintillator;
 
 //Time resolution
-const double tts=0.128;//ns
+const double tts = 0.128;//ns
 // I discussed DOI with Paweł Moskal two years ago
-const auto DOI = value<>(0.0,0.063);//ns
+const auto DOI = value<>(0.0, 0.063);//ns
 
 //Scintillator
-const double opt_dens=1.58;
-const auto sizeX=make_pair(0.0,6.0);//milimeters
-const auto sizeY=make_pair(0.0,30.0);//milimeters
-const auto sizeZ=make_pair(-150.0,150.0);//milimeters
-double absorption(const double&lambda){
+const double opt_dens = 1.58;
+const auto sizeX = make_pair(0.0, 6.0);//milimeters
+const auto sizeY = make_pair(0.0, 30.0);//milimeters
+const auto sizeZ = make_pair(-150.0, 150.0);//milimeters
+double absorption(const double& lambda) {
   // I discussed this coefficient with Paweł Moskal in Sept-Oct 2018
   // Please ask him if it is needed. Maybe you should just update table data
-  return polyester_absorp(lambda)*1.8;
+  return polyester_absorp(lambda) * 1.8;
 }
 
 //Where the gamma is registered
-const RandomUniform<> x_ph(sizeX.first,sizeX.second);
-const RandomUniform<> y_ph(sizeY.first,sizeY.second);
+const RandomUniform<> x_ph(sizeX.first, sizeX.second);
+const RandomUniform<> y_ph(sizeY.first, sizeY.second);
 const double z_ph = 0.0;
 
 
-int main(){
+int main() {
 
   //Scintillator
-  auto scin1=MakeScintillator(
-            {sizeZ,sizeX,sizeY},opt_dens,TimeDistribution2(0.005,0.2,1.5),
-            make_shared<DistribTable>(BC420_lambda.clone()),absorption
+  auto scin1 = MakeScintillator(
+    { sizeZ,sizeX,sizeY }, opt_dens, TimeDistribution2(0.005, 0.2, 1.5),
+    make_shared<DistribTable>(BC420_lambda.clone()), absorption
   );
-  scin1->Configure(Scintillator::Options(1,50));//1 thread, max 50 reflections
+  scin1->Configure(Scintillator::Options(1, 50));//1 thread, max 50 reflections
 
   //The block gathering statistics of the time difference between two signals
   vector<shared_ptr<SignalStatictics>> time_differences;
-      {
-        //Creating photosensor covering all butt of the scintillator
-        // the parameters: covered surface, the efficiency of the optical glue, quantum efficiency, time resolution
-        auto photosensor=[](){return Photosensor({sizeX,sizeY},1.0,Si_Photo_QE.func(),tts);};
-        //glue photosensors to the scintillator butts
-        auto left_sensor=photosensor(), right_sensor=photosensor();
-        scin1->Surface(0,RectDimensions::Left) >> left_sensor;
-        scin1->Surface(0,RectDimensions::Right) >> right_sensor;
+  {
+    //Creating photosensor covering all butt of the scintillator
+    // the parameters: covered surface, the efficiency of the optical glue, quantum efficiency, time resolution
+    auto photosensor = []() {return Photosensor({ sizeX,sizeY }, 1.0, Si_Photo_QE.func(), tts);};
+    //glue photosensors to the scintillator butts
+    auto left_sensor = photosensor(), right_sensor = photosensor();
+    scin1->Surface(0, RectDimensions::Left) >> left_sensor;
+    scin1->Surface(0, RectDimensions::Right) >> right_sensor;
 
-        for(size_t index=0; index<80; index++){//cycle over different order statistics
-            // virtual wires to conduct the "signal" corresponding to needed poton's registration time
-            auto left_wire=make_shared<Signal>(), right_wire=make_shared<Signal>();
+    for (size_t index = 0; index < 80; index++) {//cycle over different order statistics
+      // virtual wires to conduct the "signal" corresponding to needed poton's registration time
+      auto left_wire = make_shared<Signal>(), right_wire = make_shared<Signal>();
 
-            // TimeSignal({make_pair(index,1)}) : the time of signal is obtained for the order statistics of index
-            left_sensor >> ( TimeSignal({make_pair(index,1)}) >> left_wire );
-            right_sensor >> ( TimeSignal({make_pair(index,1)}) >> right_wire );
+      // TimeSignal({make_pair(index,1)}) : the time of signal is obtained for the order statistics of index
+      left_sensor >> (TimeSignal({ make_pair(index,1) }) >> left_wire);
+      right_sensor >> (TimeSignal({ make_pair(index,1) }) >> right_wire);
 
-            //Invert time of signal from the right photomultiplier
-            auto inv_right=SignalInvert();
-            right_wire >> inv_right;
+      //Invert time of signal from the right photomultiplier
+      auto inv_right = SignalInvert();
+      right_wire >> inv_right;
 
-            //Add left signal with the inverted right signal and connect the sum to the block gathering statistics
-            auto time_difference = make_shared<SignalStatictics>();
-            (make_shared<SignalSumm>()<<left_wire<<inv_right)>>time_difference;
+      //Add left signal with the inverted right signal and connect the sum to the block gathering statistics
+      auto time_difference = make_shared<SignalStatictics>();
+      (make_shared<SignalSumm>() << left_wire << inv_right) >> time_difference;
 
-            //pushing this statistics to vector
-            time_differences.push_back(time_difference);
-        }
+      //pushing this statistics to vector
+      time_differences.push_back(time_difference);
+    }
 
-      }
+  }
 
-   //repeat simulating registering gammas
-   for(unsigned int cnt=0;cnt<virtual_experiments_count;cnt++){
-        scin1->RegisterGamma( {z_ph,x_ph(),y_ph()}, N_photons);
-   }
+  //repeat simulating registering gammas
+  for (unsigned int cnt = 0;cnt < virtual_experiments_count;cnt++) {
+    scin1->RegisterGamma({ z_ph,x_ph(),y_ph() }, N_photons);
+  }
 
-   SortedPoints<> res_by_order_statistics, efficiency_by_order_statistics;
-   for(size_t i=0,n=time_differences.size(); i<n; i++){
-       if (time_differences[i]->data().Sample().count() > 1) // means that we can obtain resolution
-            res_by_order_statistics << make_point( (double)(i+1), (time_differences[i]->data() + DOI).uncertainty() );
-   }
+  SortedPoints<> res_by_order_statistics, efficiency_by_order_statistics;
+  for (size_t i = 0, n = time_differences.size(); i < n; i++) {
+    if (time_differences[i]->data().Sample().count() > 1) // means that we can obtain resolution
+      res_by_order_statistics << make_point((double)(i + 1), (time_differences[i]->data() + DOI).uncertainty());
+  }
 
-   Plot("order_resolution").Line(res_by_order_statistics)<<"set key on"
-                                                       << "set xlabel 'photon order statistics'"
-                                                       << "set ylabel 'time resolution'" ;
+  Plot("order_resolution").Line(res_by_order_statistics) << "set key on"
+    << "set xlabel 'photon order statistics'"
+    << "set ylabel 'time resolution'";
   return 0;
 }

@@ -2,7 +2,7 @@
 // MIT license
 #include <math_h/tabledata.h>
 #include "model.h"
-const MathTemplates::LinearInterpolation<> BC420_lambda=MathTemplates::Points<>{
+const MathTemplates::LinearInterpolation<> BC420_lambda = MathTemplates::Points<>{
     // Photon wavelength distribution
     // lambda(nm),  probability (a.u.)
     {359.686,0.686036},
@@ -121,7 +121,7 @@ const MathTemplates::LinearInterpolation<> BC420_lambda=MathTemplates::Points<>{
     {494.241,0.574196},
     {496.859,0.428434}
 };
-const MathTemplates::LinearInterpolation<> polyester_absorp=MathTemplates::Points<>{
+const MathTemplates::LinearInterpolation<> polyester_absorp = MathTemplates::Points<>{
     // absorption coefficient depending on photon wavelength
     // lambda(nm),  coef(mm^(-1))
     {348.842, 0.0083},
@@ -139,7 +139,7 @@ const MathTemplates::LinearInterpolation<> polyester_absorp=MathTemplates::Point
     {597.876, 0.0002},
     {625.29,  0.0002}
 };
-const MathTemplates::LinearInterpolation<> Si_Photo_QE=MathTemplates::Points<>{
+const MathTemplates::LinearInterpolation<> Si_Photo_QE = MathTemplates::Points<>{
     // Efficiency of silicon photosensor depending on photon wavelength
     // lambda(nm), probability(n.d.)
     {140,	0.0},
@@ -178,51 +178,51 @@ const MathTemplates::LinearInterpolation<> Si_Photo_QE=MathTemplates::Points<>{
     {940,	0.30}
 };
 
-const MathTemplates::LinearInterpolation<> tube_QE=MathTemplates::Points<>{
-// Efficiency of photomultiplier depending on photon wavelength
-// lambda(nm), probability(n.d.)
-{270,	0.1040038519},
-{280,	0.1457088571},
-{290,	0.1817626207},
-{300,	0.2040502667},
-{310,	0.220952},
-{320,	0.229768125},
-{330,	0.2348109091},
-{340,	0.2364971765},
-{350,	0.236716},
-{360,	0.2373497778},
-{370,	0.237392973},
-{380,	0.2358773684},
-{390,	0.234229641},
-{400,	0.2307547},
-{410,	0.226617561},
-{420,	0.2218153333},
-{430,	0.215408186},
-{440,	0.208103},
-{450,	0.1983724444},
-{460,	0.1871645217},
-{470,	0.1748611064},
-{480,	0.1644349074},
-{490,	0.1537881179},
-{500,	0.1422390222},
-{510,	0.1280928105},
-{520,	0.1118305128},
-{530,	0.0945025577},
-{540,	0.0788395062},
-{550,	0.065920404},
-{560,	0.0554703175},
-{570,	0.0463368421},
-{580,	0.0389103448},
-{590,	0.0318259661},
-{600,	0.0249963333},
-{610,	0.0188297049},
-{620,	0.013492},
-{630,	0.009176},
-{640,	0.0058764375},
-{650,	0.0034968},
-{660,	0.001984},
-{670,	0.0010660299},
-{680,	0.0005434118},
-{690,	0.0002695652},
-{700,	0.0001310857 }
+const MathTemplates::LinearInterpolation<> tube_QE = MathTemplates::Points<>{
+    // Efficiency of photomultiplier depending on photon wavelength
+    // lambda(nm), probability(n.d.)
+    {270,	0.1040038519},
+    {280,	0.1457088571},
+    {290,	0.1817626207},
+    {300,	0.2040502667},
+    {310,	0.220952},
+    {320,	0.229768125},
+    {330,	0.2348109091},
+    {340,	0.2364971765},
+    {350,	0.236716},
+    {360,	0.2373497778},
+    {370,	0.237392973},
+    {380,	0.2358773684},
+    {390,	0.234229641},
+    {400,	0.2307547},
+    {410,	0.226617561},
+    {420,	0.2218153333},
+    {430,	0.215408186},
+    {440,	0.208103},
+    {450,	0.1983724444},
+    {460,	0.1871645217},
+    {470,	0.1748611064},
+    {480,	0.1644349074},
+    {490,	0.1537881179},
+    {500,	0.1422390222},
+    {510,	0.1280928105},
+    {520,	0.1118305128},
+    {530,	0.0945025577},
+    {540,	0.0788395062},
+    {550,	0.065920404},
+    {560,	0.0554703175},
+    {570,	0.0463368421},
+    {580,	0.0389103448},
+    {590,	0.0318259661},
+    {600,	0.0249963333},
+    {610,	0.0188297049},
+    {620,	0.013492},
+    {630,	0.009176},
+    {640,	0.0058764375},
+    {650,	0.0034968},
+    {660,	0.001984},
+    {670,	0.0010660299},
+    {680,	0.0005434118},
+    {690,	0.0002695652},
+    {700,	0.0001310857 }
 };
